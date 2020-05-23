@@ -1,1 +1,25 @@
+<h3>New Post Form</h3>
+<%= form_for(@post) do |f| %>
 
+  <p><%= f.label :title %>
+  <%= f.text_field :title %></p>
+
+  <p><%= f.label :content %>
+  <%= f.text_field :content %></p>
+
+  <p>Select from exisiting categories</p>
+  <p><%= f.collection_check_boxes :category_ids, Category.all, :id, :name %></p>
+
+  <p>Add a new category</p>
+  <p><%= f.fields_for :categories, post.categories.build do |cat_fields| %>
+    <%= cat_fields.label :name %>
+    <%= cat_fields.text_field :name, list: "cat_autocomplete" %>
+      <datalist id="cat_autocomplete">
+        <% Category.all.each do |cat| %>
+          <option value="<%= cat.name %>">
+        <% end %>
+      </datalist>
+  <% end %></p>
+
+  <%= f.submit %>
+<% end %>
